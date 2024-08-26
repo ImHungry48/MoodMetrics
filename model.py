@@ -1,5 +1,7 @@
 from transformers import pipeline
 
+model_id = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+
 # Initialize the sentiment analysis pipeline
 sentiment_analyzer = pipeline('sentiment-analysis')
 
