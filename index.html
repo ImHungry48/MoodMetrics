@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            max-width: 600px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        pre {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sentiment Analysis Dashboard</h1>
+    <form action="/analyze" method="post">
+        <label for="text">Enter text:</label>
+        <textarea id="text" name="text" rows="4" cols="50"></textarea>
+        <br>
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if result %}
+        <h2>Analysis Result:</h2>
+        <pre>{{ result | tojson(indent=2) }}</pre>
+    {% elif error %}
+        <h2 class="error">Error:</h2>
+        <p>{{ error }}</p>
+    {% endif %}
+</body>
+</html>

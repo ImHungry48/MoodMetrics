@@ -27,6 +27,7 @@ Analyze Endpoint
 - Method: POST
 - Content-Type: application/json
 - Request Body: JSON object containing the text to analyze.
+
 Example request:
 ```
 curl -X POST http://127.0.0.1:5000/analyze -H "Content-Type: application/json" -d '{"text": "I love you."}'
