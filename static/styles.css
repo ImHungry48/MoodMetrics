@@ -1,23 +1,64 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css?family=PT+Sans:400,400italic');
+@import url('https://fonts.googleapis.com/css?family=Droid+Serif');
+
 body {
+    counter-reset: section;
+    text-align: center;
     font-family: 'Arial', sans-serif;
-    background-color: #fefefe;
-    color: #333;
+    background-color: #2f1e27;
+    color: #fff;
     margin: 0;
     padding: 20px;
 }
 
-h1 {
-    color: #ff6f61;
+.container {
+    position: relative;
+    top: 100px;
+}
+
+.container h1, .container span {
+    font-family: 'PT Sans', Helvetica, sans-serif;
+}
+
+.container h1 {
     text-align: center;
+    color: #fff;
+    font-weight: 100;
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.container h2 {
+    font-family: 'Droid Serif';
+    font-style: italic;
+    color: #d3b6ca;
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 20px; /* Add space above the h2 */
+}
+
+.container form span:before {
+    counter-increment: section;
+    content: counter(section);
+    border: 2px solid #4c2639;
+    width: 40px;
+    height: 40px;
+    color: #000000;
+    display: inline-block;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    line-height: 1.6em;
+    font-size: 1.5em;
+    position: relative;
+    left: -22px;
+    top: -11px;
+    background: #2f1e27;
 }
 
 form {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    max-width: 600px;
-    margin: auto;
+    margin-top: 25px;
+    display: inline-block;
 }
 
 textarea {
@@ -28,14 +69,16 @@ textarea {
 }
 
 button {
-    background-color: #ff6f61;
+    background-color: rgba(197, 62, 126, 0.33);
     border: none;
     border-radius: 4px;
     color: white;
+    position: relative;
+    width: 100px;
     cursor: pointer;
     font-size: 16px;
     padding: 10px 20px;
-    margin-top: 10px;
+    margin-top: 20px; /* Ensure there is space above the button */
 }
 
 button:hover {
@@ -43,14 +86,17 @@ button:hover {
 }
 
 pre {
-    background: #ffffff;
+    background: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
+    color:black;
     padding: 10px;
     overflow: auto;
+    margin-top: 20px; /* Ensure space between pre element and preceding content */
 }
 
 .error {
     color: #ff4d4d;
     text-align: center;
+    margin-top: 20px; /* Add space above the error message */
 }

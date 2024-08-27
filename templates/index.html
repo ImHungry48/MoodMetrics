@@ -7,22 +7,23 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1 align="center">Sentiment Analysis Dashboard</h1>
-    <h2 align="center">Welcome to Mood Metrics!</h2>
-    <p>This tool is designed to help you quickly understand the emotional tone of any text you input. </p>
-    <form action="/analyze" method="post">
-        <label for="text">Enter text:</label>
-        <textarea id="text" name="text" rows="4" cols="50"></textarea>
-        <br>
-        <button type="submit">Analyze</button>
-    </form>
+    <div class="container">
+        <h2>Welcome to Mood Metrics!</h2>
+        <p>This tool is designed to help you quickly understand the emotional tone of any text you input.</p>
+        <form action="/analyze" method="post">
+            <label for="text">Enter text:</label>
+            <textarea id="text" name="text" rows="4" cols="50"></textarea>
+            <br>
+            <button type="submit">Analyze</button>
+        </form>
 
-    {% if result %}
-        <h2>Analysis Result:</h2>
-        <pre>{{ result | tojson(indent=2) }}</pre>
-    {% elif error %}
-        <h2 class="error">Error:</h2>
-        <p>{{ error }}</p>
-    {% endif %}
+        {% if result %}
+            <h2>Analysis Result:</h2>
+            <pre>{{ result | tojson(indent=2) }}</pre>
+        {% elif error %}
+            <h2 class="error">Error:</h2>
+            <p>{{ error }}</p>
+        {% endif %}
+    </div>
 </body>
 </html>
