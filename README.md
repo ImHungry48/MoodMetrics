@@ -96,17 +96,38 @@ from transformers import pipeline
 
 model_id = "cardiffnlp/twitter-roberta-base-sentiment-latest"
 
+# Initialize the sentiment analysis pipeline
 sentiment_analyzer = pipeline('sentiment-analysis', model=model_id)
 
+# Set up logging
 logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def analyze_sentiment(text):
     try:
         result = sentiment_analyzer(text)
-        return result
+        return format_result(result)
     except Exception as e:
+        # Log the exception for debugging
         logging.error(f"Model Error: {e}")
         return {'error': 'An error occurred during sentiment analysis'}
+
+def format_result(result):
+    try:
+        label_result = result[0].get('label')
+        formatted_result = ''
+
+        print(label_result)
+        if label_result == "positive":
+            formatted_result = "Positive"
+        elif label_result == "negative":
+            formatted_result = "Negative"
+        elif label_result == "neutral":
+            formatted_result = "Neutral"
+        else:
+            raise Exception
+        return formatted_result
+    except Exception as e:
+        return {'error': 'An error occurred during result formatting'}
 ```
 
 ### `app.py`
@@ -115,24 +136,25 @@ This script sets up the Flask web server and defines routes for the web applicat
 
 ```python
 from flask import Flask, request, render_template, jsonify
-from model import analyze_sentiment
+from model import analyze_sentiment  # Import the function from the model script
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html')  # Render the HTML form
 
 @app.route('/analyze', methods=['POST'])
 def analyze():
-    text = request.form.get('text')
+    text = request.form.get('text')  # Get the text from the form submission
     
     if not text:
-        return render_template('index.html', error='No text provided')
+        return render_template('index.html', error='No text provided')  # Return an error message if no text is provided
 
+    # Perform sentiment analysis
     result = analyze_sentiment(text)
     
-    return render_template('index.html', result=result)
+    return render_template('index.html', result=result)  # Render the results on the same page
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -149,58 +171,27 @@ This HTML file provides a simple form for text input and displays the sentiment 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sentiment Analysis</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            color: #333;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        textarea {
-            width: 100%;
-            max-width: 600px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        pre {
-            background: #fff;
-            border: 1px solid #ddd;
-            padding: 10px;
-        }
-        .error {
-            color: red;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Sentiment Analysis Dashboard</h1>
-    <form action="/analyze" method="post">
-        <label for="text">Enter text:</label>
-        <textarea id="text" name="text" rows="4" cols="50"></textarea>
-        <br>
-        <button type="submit">Analyze</button>
-    </form>
+    <div class="container">
+        <h2>Welcome to Mood Metrics!</h2>
+        <p>This tool is designed to help you quickly understand the emotional tone of any text you input.</p>
+        <form action="/analyze" method="post">
+            <label for="text">Enter text:</label>
+            <textarea id="text" name="text" rows="4" cols="50"></textarea>
+            <br>
+            <button type="submit">Analyze</button>
+        </form>
 
-    {% if result %}
-        <h2>Analysis Result:</h2>
-        <pre>{{ result | tojson(indent=2) }}</pre>
-    {% elif error %}
-        <h2 class="error">Error:</h2>
-        <p>{{ error }}</p>
-    {% endif %}
+        {% if result %}
+            <h2>Analysis Result:</h2>
+            <pre>{{ result | tojson(indent=2) }}</pre>
+        {% elif error %}
+            <h2 class="error">Error:</h2>
+            <p>{{ error }}</p>
+        {% endif %}
+    </div>
 </body>
 </html>
 ```
